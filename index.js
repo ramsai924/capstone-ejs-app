@@ -13,7 +13,6 @@ const MongoStore = require("connect-mongo")(session);
 
 //routes
 const Auth = require("./routes/auth")
-const Address = require("./routes/addess")
 const addScrap = require("./routes/sellData")
 const foundUsers = require("./routes/users")
 
@@ -45,7 +44,6 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 //use routes
 app.use("/", foundUsers)
 app.use("/auth", Auth);
-// app.use("/seller-address", Address)
 app.use("/addscarp", addScrap)
 
 

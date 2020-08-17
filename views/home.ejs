@@ -63,24 +63,26 @@
                                <% if(usersFound.length <= 0){ %>
                                 <p style="text-align: center;margin-top: 20%;">No users Found Near you</p>
                                <% }else{ %>
-                                    <% usersFound.forEach((user) => { %>
+                                    <% usersFound.forEach((users) => { %>
                                     <div id="foundData">
                                         <div style="padding: 10px;" class="container">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <img src="<%= user.image %>" loading="eager" alt="" width="110" height="110" style="margin-top: 5px;border-radius: 5px;">
+                                                    <img src="<%= users.image %>" loading="eager" alt="" width="110" height="110" style="margin-top: 5px;border-radius: 5px;">
                                                 </div>
                                                 <div class="col-md-4">
                                                     
-                                                    <p><strong>Name</strong> : <%= user.userid.name %></p>
-                                                    <p><strong>Phone Number</strong> : <%= user.userid.phonenumber %></p>
-                                                    <p><strong>Scrape Type</strong> : <%= user.scarpType %></p>
+                                                    <p><strong>Name</strong> : <%= users.userid.name %></p>
+                                                    <p><strong>Phone Number</strong> : <%= users.userid.phonenumber %></p>
+                                                    <p><strong>Scrape Type</strong> : <%= users.scarpType %></p>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div style="display: flex;margin: 10px;">
                                                         <div>
                                                             <form action="/acceptOrder" method="post">
-                                                                <input type="hidden" name="sellerdataId" value="<%= user._id %>">
+                                                                <input type="hidden" name="soldDataId" value="<%= users._id %>">
+                                                                <input type="hidden" name="sellerid" value="<%= users.userid._id %>">
+                                                                <input type="hidden" name="buyerid" value="<%= user._id %>">
                                                                 <input type="submit" value="Accept order"
                                                                      style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
                                                             </form>
@@ -88,7 +90,7 @@
                                                                     
                                                         <div>
                                                             <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                <a href="https://www.google.com/maps?q=<%= user.location.coordinates[1] %>,<%= user.location.coordinates[0] %>"><i 
+                                                                <a href="https://www.google.com/maps?q=<%= users.location.coordinates[1] %>,<%= users.location.coordinates[0] %>"><i 
                                                                     class="fa fa-location-arrow" aria-hidden="true" style="color: white;margin-left: 5px;"></i></a>
                                                              </div>
                                                                     
@@ -112,23 +114,24 @@
 
                         <!-- accepted orders section -->
                         <div id="acceptedOrderFound" style="display: none;">
-                           <%  if(user.acceptedOreders.length > 0){ %>
-                                <% user.acceptedOreders.forEach((seller) => { %>
-                                 <% if(seller.orderStatus === "ongoing"){ %>
+                           <%  if(acceptedOrders.length > 0){ %>
+                                <% acceptedOrders.forEach((seller) => { %>
+                                 <% if(seller.soldDataId.orderStatus === "ongoing"){ %>
                                         <div id="foundData">
                                             <div style="padding: 10px;" class="container">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                        
-                                                        <p><strong>Name</strong> : <%= seller.userid.name %></p>
-                                                        <p><strong>Phone Number</strong> : <%= seller.userid.phonenumber %></p>
-                                                        <p><strong>Scrape Type</strong> : <%= seller.scarpType %></p>
+                                                        <p><strong>Name</strong> : <%= seller.soldDataId.userid.name %></p>
+                                                        <p><strong>Phone Number</strong> : <%= seller.soldDataId.userid.phonenumber %></p>
+                                                        <p><strong>Scrape Type</strong> : <%= seller.soldDataId.scarpType %></p>
                                                     </div>
                                                     <div class="col-md-6">
                                                        <div style="display: flex;margin: 10px;">
                                                            <div>
                                                                 <form action="/completeOrder" method="post">
-                                                                    <input type="hidden" name="sellerdataId" value="<%= seller._id %>">
+                                                                    <input type="hidden" name="acceptedOrderId" value="<%= seller._id %>">
+                                                                    <input type="hidden" name="sellerdataId" value="<%= seller.soldDataId._id %>">
                                                                     <input type="submit" value="Complete order"
                                                                         style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
                                                                 </form>
@@ -136,7 +139,8 @@
 
                                                            <div style="margin-left: 5px;"> 
                                                                 <form action="/rejectOrder" method="post">
-                                                                    <input type="hidden" name="sellerdataId" value="<%= seller._id %>">
+                                                                    <input type="hidden" name="acceptedOrderId" value="<%= seller._id %>">
+                                                                    <input type="hidden" name="sellerdataId" value="<%= seller.soldDataId._id %>">
                                                                     <input type="submit" value="Reject order"
                                                                         style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
                                                                 </form>
@@ -144,7 +148,7 @@
 
                                                            <div>
                                                             <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                <a href="https://www.google.com/maps?q=<%= seller.location.coordinates[1] %>,<%= seller.location.coordinates[0] %>"><i
+                                                                <a href="https://www.google.com/maps?q=<%= seller.soldDataId.location.coordinates[1] %>,<%= seller.soldDataId.location.coordinates[0] %>"><i
                                                                         class="fa fa-location-arrow" aria-hidden="true" style="color: white;margin-left: 5px;"></i></a>
                                                             </div>
                                                             
@@ -173,7 +177,15 @@
             <%}else if(user.usertype === "seller"){ %>
                 <div class="sellerSection">
                     <div class="container">
-
+                        <div style="display: flex;margin-top: 50px;">
+                            <div id="postedDataBtn">
+                                <p class="active" style="padding: 5px;cursor: pointer;" id="posted"><strong> Your seller data</strong> </p>
+                            </div>
+                            <div id="ongoingDataBtn">
+                                <p style="margin-left: 15px;padding: 5px;cursor: pointer;" id="ongo"><strong> Ongoing orders</strong> </p>
+                            </div>
+                        </div>
+                        <hr>
                            <div id="addScrap">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModals"
                                 style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 10px;padding-bottom: 12px;
@@ -262,64 +274,111 @@
 
                     </div>
 
-                    <div class="container">
+                    <div class="container" id="postedData">
                         
                        <% if(userData){ %>
                             <%if(userData.length > 0){ %>
                                 <%userData.forEach((sellerData) => { %>
-                                    <h5 style="text-align: center;margin-top: 50px;">Your seller data</h5><hr>
                                     
-                                    <div id="foundData">
-                                        <div style="padding: 10px;" class="container">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <img src="<%= sellerData.image %>" loading="eager" alt="" width="110" height="110"
-                                                        style="margin-top: 5px;border-radius: 5px;">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <p><strong>Scrape Type</strong> : <%= sellerData.scarpType %></p>
-                                                    <p><strong>Address</strong> : <%= sellerData.hno %> ,<%= sellerData.village %>, <%= sellerData.street %>,
-                                                         <%= sellerData.mandal %>, <%= sellerData.district %>, <%= sellerData.pincode %> </p>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div style="display: flex;margin: 10px;">
-                                                        <div>
-                                                            <form action="/edits" method="post">
-                                                                <input type="hidden" name="sellerdataId" value="<%= user._id %>">
-                                                                <input type="submit" value="Edit"
-                                                                    style="background-color: #000080;border-radius: 30px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;
-                                                                    padding-left: 15px; padding-right: 15px;">
-                                                            </form>
-                                                        </div>
                                     
-                                                        <div>
-                                                            <div
-                                                                style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                <a href=""><i class="fa fa-trash" aria-hidden="true"
-                                                                        style="color: white;margin-left: 5px;"></i></a>
+                                   <div >
+                                        <div id="foundData">
+                                            <div style="padding: 10px;" class="container">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <img src="<%= sellerData.image %>" loading="eager" alt="" width="110" height="110"
+                                                            style="margin-top: 5px;border-radius: 5px;">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p><strong>Scrape Type</strong> : <%= sellerData.scarpType %></p>
+                                                        <p><strong>Address</strong> : <%= sellerData.hno %> ,<%= sellerData.village %>,
+                                                            <%= sellerData.street %>,
+                                                            <%= sellerData.mandal %>, <%= sellerData.district %>, <%= sellerData.pincode %> </p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div style="display: flex;margin: 10px;">
+                                                            <div>
+                                                                <form action="/edits" method="post">
+                                                                    <input type="hidden" name="sellerdataId" value="<%= user._id %>">
+                                                                    <input type="submit" value="Edit" style="background-color: #000080;border-radius: 30px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;
+                                                                                                            padding-left: 15px; padding-right: 15px;">
+                                                                </form>
                                                             </div>
-                                    
+                                        
+                                                            <div>
+                                                                <div
+                                                                    style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
+                                                                    <a href=""><i class="fa fa-trash" aria-hidden="true"
+                                                                            style="color: white;margin-left: 5px;"></i></a>
+                                                                </div>
+                                        
+                                                            </div>
+                                        
+                                        
                                                         </div>
-                                    
-                                                       
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- <div id="foundData">
-                                        <div style="padding: 10px;" class="container">
-                                            <img src="<%= sellerData.image %>" alt="" width="100" height="100"><br><br>
-                                            <p><strong>Scrape Type</strong> : <%= sellerData.scarpType %></p> 
-                                            <p><strong>Address</strong> : <%= sellerData.hno %> ,<%= sellerData.village %>, <%= sellerData.street %>,
-                                            <%= sellerData.mandal %>, <%= sellerData.district %>, <%= sellerData.pincode %> </p>
-                                        </div>
-                                    </div> -->
+                                   </div>
+
+                                   
+                                   
                                 <%}) %>
+                           <% }else{ %>
+                               <p style="text-align: center;margin-top: 20%;">Post the scrape data</p>
                            <% } %>
                        <% }else{ %>
-                            <p>You haven't posted any data</p>
+                            <p style="text-align: center;margin-top: 20%;">You haven't posted any data</p>
                        <% } %>
+                    </div>
+
+                    <div id="ongoingOrder" class="container" style="display: none;">
+                        <% if(acceptedOrders.length > 0){ %>
+                            <% acceptedOrders.forEach((order) => { %>
+                                <% if(order.soldDataId.orderStatus === "ongoing"){ %>
+                                        <div id="foundData">
+                                            <div style="padding: 10px;" class="container">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <img src="<%= order.soldDataId.image %>" loading="eager" alt="" width="110" height="110"
+                                                            style="margin-top: 5px;border-radius: 5px;">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div style="margin: 10px;">
+                                                            <p><strong>Scrape Type</strong> : <%= order.soldDataId.scarpType %></p>
+                                                            <p><strong>Address</strong> : <%= order.soldDataId.hno %> ,<%= order.soldDataId.village %>,
+                                                                <%= order.soldDataId.street %>,
+                                                                <%= order.soldDataId.mandal %>, <%= order.soldDataId.district %>,
+                                                                <%= order.soldDataId.pincode %> </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                        
+                                                        <p style="margin : 10px;"><strong>Buyer Name </strong>: <%= order.buyerid.name %></p>
+                                                        <div style="display: flex;margin: 10px;">
+                                        
+                                                            <p><strong>Buyer Contact </strong>: <%= order.buyerid.phonenumber %> </p>
+                                                            <div>
+                                                                <div
+                                                                    style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 30px;margin-top: -5px;">
+                                                                    <a href=""><i class="fa fa-phone" aria-hidden="true"
+                                                                            style="color: white;margin-left: 5px;"></i></a>
+                                                                </div>
+                                        
+                                                            </div>
+                                        
+                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                <% } %>
+                            <% }) %>
+                        <% }else{ %>
+                            <p style="text-align: center;margin-top: 20%;">You dont have any ongoing orders</p>
+                        <% } %>
                     </div>
                    
                 </div>
@@ -347,6 +406,8 @@
             }
         }
 
+
+        //Buyer events
         $("#acceptedIteams").click(function(){
             $("#acceptedOrderFound").show()
             $("#foundusersNear").hide()
@@ -355,7 +416,24 @@
         });
         $("#getuserNearBtn").click(function(){
             $("#accepteds").removeClass("active")
-        })
+        });
+
+
+        //seller events
+        $("#postedDataBtn").click(function(){
+            $("#postedData").show()
+            $("#ongoingOrder").hide()
+            $("#posted").addClass("active")
+            $("#ongo").removeClass("active")
+        });
+
+        $("#ongoingDataBtn").click(function(){
+            $("#ongoingOrder").show()
+            $("#postedData").hide()
+            $("#posted").removeClass("active")
+            $("#ongo").addClass("active")
+            
+        });
     </script>
 </body>
 

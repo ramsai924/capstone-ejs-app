@@ -51,6 +51,10 @@ const seller_table_data_schema = Schema({
             type : String,
             required : true
         },
+        boughtUser : {
+            type: Schema.Types.ObjectId,
+            ref: "buyer_user_model",
+        },
         location: {
             type: {
                 type: String,
