@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/public/style/home.css" type="text/css">
+    <title>Welcome</title>
+</head>
+
+<body>
+    <div style="position: relative;top: 50%;">
+        <div class="topnav" id="myTopnav">
+            <div class="container">
+                <a href="/" class="active home-tag" style="color: black;" id="home">Home</a>
+                <div id="alignment">
+
+
+                    <a href="/profile">About us</a>
+                    <a href="/profile">Contact us</a>
+                    <a href="/needs">Needs</a>
+                    <a href="/profile">Profile</a>
+                    <a href="/logout">Logout</a>
+
+                </div>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i style="font-size: 30px;display: none;" class="fa fa-times" aria-hidden="true"></i>
+                    <i style="font-size: 30px;" class="fa fa-bars" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myTopnav");
+            if (x.className === "topnav") {
+                x.className += " responsive";
+
+                document.querySelector(".topnav").style.background = "black"
+                document.querySelector(".fa-times").style.display = "block"
+
+            } else {
+                x.className = "topnav";
+                document.querySelector(".topnav").style.background = "transparent"
+
+                document.querySelector(".fa-times").style.display = "none"
+            }
+        }
+    </script>
+</body>
+
+</html>
