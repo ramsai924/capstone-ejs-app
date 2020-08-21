@@ -34,7 +34,105 @@
             </div>
         </div>
     </div>
+<% if(user != undefined){ %>
+<% if(user.usertype === "seller"){ %>
+    <!-- add scrape button and the popup model is in line 258-->
+    <div id="bottomblur" class="container-fluid ">
+        <div id="addScrap" style="z-index:1">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModals"
+                style="background-color: #000080;border-radius: 75px; color: white;outline: none;padding: 10px;padding-bottom: 12px;
+                                                                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                Add scrap details
+            </button>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- add scrape form data -->
+                    <div>
+                        <form action="/addscarp" method="POST" enctype="multipart/form-data">
+    
+                            <input type="hidden" class="form-control" name="userid" value="<%= user._id %>">
+    
+    
+                            <div class="custom-file">
+                                <label for="scarpType">Image : <span style="color: red;">*</span></label>
+                                <input type="file" class="custom-file-input" id="customFile" name="images" required>
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="scarpType">scrap type : <span style="color: red;">*</span></label>
+                                <select id="scarpType" name="scarpType" class="form-control">
+                                    <option value="">select</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Bottels">Bottels</option>
+                                    <option value="Batteries">Batteries</option>
+    
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="validationServer01">H-no :</label>
+                                <input type="text" class="form-control" id="validationServer01" placeholder="Enter hno"
+                                    name="hno">
+    
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="village">village:</label>
+                                <input type="text" class="form-control" placeholder="Enter village" name="village">
+                            </div>
+                            <div class="form-group">
+                                <label for="street">street:</label>
+                                <input type="text" class="form-control" placeholder="Enter street" name="street">
+                            </div>
+                            <div class="form-group">
+                                <label for="mandal">mandal:</label>
+                                <input type="text" class="form-control" placeholder="Enter mandal" name="mandal">
+                            </div>
+                            <div class="form-group">
+                                <label for="district">district:</label>
+                                <input type="text" class="form-control" placeholder="Enter district" name="district">
+                            </div>
+                            <div class="form-group">
+                                <label for="state">state:</label>
+                                <input type="text" class="form-control" placeholder="Enter state" name="state">
+                            </div>
+                            <div class="form-group">
+                                <label for="pincode">pincode:</label>
+                                <input type="text" class="form-control" placeholder="Enter pincode" name="pincode">
+                            </div>
+    
+    
+                    </div>
+    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    style="background-color: #000080;border-radius: 30px;border: none; color: white;outline:
+                 none;padding: 8px;padding-bottom: 9px;padding-left: 15px; padding-right: 15px;">Close</button>
+                    <button type="submit" class="btn btn-primary"
+                    style="background-color: #000080;border-radius: 30px;border: none; color: white;outline:
+                 none;padding: 8px;padding-bottom: 9px;padding-left: 15px; padding-right: 15px;">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+<% } %>
+<% }  %>
+    
     
        <% if(user != undefined){ %>
            <% if(user.usertype === "buyer"){ %>
@@ -43,8 +141,8 @@
                         <div style="margin-top: 50px;display: flex;">
                            <div>
                                 <form action="/" method="get">
-                                    <input type="hidden" value="17.32131" name="latitude">
-                                    <input type="hidden" value="78.65575" name="longitude">
+                                    <input type="hidden"  name="latitude" id="latitudes">
+                                    <input type="hidden"  name="longitude" id="longitudes">
                                     <input type="hidden" value="50" name="distance">
                                     <input type="submit" value="Get users NearBy" id="getuserNearBtn"
                                         style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 10px;padding-bottom: 12px;">
@@ -56,7 +154,7 @@
                            </div>
                         </div><hr>
 
-                        <div id="foundusersNear">
+                        <div id="foundusersNear" style="margin-bottom: 50px;">
                            <%  if(!usersFound){ %>
                                 <p style="text-align: center;margin-top: 20%;">Click on get users button To get users near you</p>
                             <% }else{ %>
@@ -68,13 +166,16 @@
                                         <div style="padding: 10px;" class="container">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <img src="<%= users.image %>" loading="eager" alt="" width="110" height="110" style="margin-top: 5px;border-radius: 5px;">
+                                                    <img src="<%= users.image %>" loading="eager" alt="" width="100%" height="230" style="margin-top: 5px;border-radius: 5px;">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    
-                                                    <p><strong>Name</strong> : <%= users.userid.name %></p>
-                                                    <p><strong>Phone Number</strong> : <%= users.userid.phonenumber %></p>
-                                                    <p><strong>Scrape Type</strong> : <%= users.scarpType %></p>
+                                                    <div style="margin-top : 10px;">
+                                                        <p><strong>Name</strong> : <%= users.userid.name %></p>
+                                                        <p><strong>Phone Number</strong> : <%= users.userid.phonenumber %></p>
+                                                        <p><strong>Scrape Type</strong> : <%= users.scarpType %></p>
+                                                        <p><strong>Address </strong> : <%= users.hno %>,<%= users.village %>,<%= users.street %>
+                                                            <%= users.pincode %>,<%= users.state %> </p>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div style="display: flex;margin: 10px;">
@@ -83,301 +184,294 @@
                                                                 <input type="hidden" name="soldDataId" value="<%= users._id %>">
                                                                 <input type="hidden" name="sellerid" value="<%= users.userid._id %>">
                                                                 <input type="hidden" name="buyerid" value="<%= user._id %>">
-                                                                <input type="submit" value="Accept order"
+                                                                <input type="submit" value="Accept order" id="acceptedOrderSubmitBtn"
                                                                      style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
-                                                            </form>
+                                                             </form>
                                                         </div>
-                                                                    
-                                                        <div>
-                                                            <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                <a href="https://www.google.com/maps?q=<%= users.location.coordinates[1] %>,<%= users.location.coordinates[0] %>"><i 
-                                                                    class="fa fa-location-arrow" aria-hidden="true" style="color: white;margin-left: 5px;"></i></a>
-                                                             </div>
-                                                                    
-                                                         </div>
-                                                                    
-                                                        <div>
-                                                            <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                <i class="fa fa-phone" aria-hidden="true" style="color: white;margin-left: 5px;"></i>
-                                                            </div>
-                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <% }) %>
-                              <% } %>
-                           <%  } %>
-                        </div>
-
-
-                        <!-- accepted orders section -->
-                        <div id="acceptedOrderFound" style="display: none;">
-                           <%  if(acceptedOrders.length > 0){ %>
-                                <% acceptedOrders.forEach((seller) => { %>
-                                 <% if(seller.soldDataId.orderStatus === "ongoing"){ %>
-                                        <div id="foundData">
-                                            <div style="padding: 10px;" class="container">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                       
-                                                        <p><strong>Name</strong> : <%= seller.soldDataId.userid.name %></p>
-                                                        <p><strong>Phone Number</strong> : <%= seller.soldDataId.userid.phonenumber %></p>
-                                                        <p><strong>Scrape Type</strong> : <%= seller.soldDataId.scarpType %></p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                       <div style="display: flex;margin: 10px;">
-                                                           <div>
-                                                                <form action="/completeOrder" method="post">
-                                                                    <input type="hidden" name="acceptedOrderId" value="<%= seller._id %>">
-                                                                    <input type="hidden" name="sellerdataId" value="<%= seller.soldDataId._id %>">
-                                                                    <input type="submit" value="Complete order"
-                                                                        style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
-                                                                </form>
-                                                           </div>
-
-                                                           <div style="margin-left: 5px;"> 
-                                                                <form action="/rejectOrder" method="post">
-                                                                    <input type="hidden" name="acceptedOrderId" value="<%= seller._id %>">
-                                                                    <input type="hidden" name="sellerdataId" value="<%= seller.soldDataId._id %>">
-                                                                    <input type="submit" value="Reject order"
-                                                                        style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
-                                                                </form>
-                                                           </div>
-
-                                                           <div>
-                                                            <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                <a href="https://www.google.com/maps?q=<%= seller.soldDataId.location.coordinates[1] %>,<%= seller.soldDataId.location.coordinates[0] %>"><i
-                                                                        class="fa fa-location-arrow" aria-hidden="true" style="color: white;margin-left: 5px;"></i></a>
-                                                            </div>
-                                                            
-                                                           </div>
-
-                                                           <div>
-                                                            <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                <i class="fa fa-phone" aria-hidden="true" style="color: white;margin-left: 5px;"></i>
-                                                            </div>
-                                                           </div>
-                                                       </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                 <% } %>
-                                <% }) %>
-                           <%  }else{ %>
-                            <p style="text-align: center;margin-top: 20%;">No accepted orders</p>
-                           <% } %>
-                        </div>
-
-
-                    </div>
-                </div>
-            <%}else if(user.usertype === "seller"){ %>
-                <div class="sellerSection">
-                    <div class="container">
-                        <div style="display: flex;margin-top: 50px;">
-                            <div id="postedDataBtn">
-                                <p class="active" style="padding: 5px;cursor: pointer;" id="posted"><strong> Your seller data</strong> </p>
-                            </div>
-                            <div id="ongoingDataBtn">
-                                <p style="margin-left: 15px;padding: 5px;cursor: pointer;" id="ongo"><strong> Ongoing orders</strong> </p>
-                            </div>
-                        </div>
-                        <hr>
-                           <div id="addScrap">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModals"
-                                style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 10px;padding-bottom: 12px;
-                                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                                    Add scrap details
-                                </button>
-                           </div>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- add scrape form data -->
-                                        <div>
-                                            <form action="/addscarp" method="POST" enctype="multipart/form-data">
-                                           
-                                            <input type="hidden" class="form-control" name="userid" value="<%= user._id %>">
-                                                
+                                                     
+                                          <div>
+                                             <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;"  >
+                           
+                                            <a type="button" data-toggle="modal" data-target="#popup<%= users._id %>"><i class="fa fa-location-arrow" aria-hidden="true" style="color: white;margin-left: 5px;"></i></a>
+                                                    
+                                             </div>
+                                             
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="popup<%= users._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
                                             
-                                            <div class="custom-file">
-                                                <label for="scarpType">Image : <span style="color: red;">*</span></label>
-                                                <input type="file" class="custom-file-input" id="customFile" name="images" required> 
-                                                <label class="custom-file-label" for="customFile">Choose file</label>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <iframe
+                                                                src="https://www.google.com/maps?q=<%= users.location.coordinates[1] %>,<%= users.location.coordinates[0] %>&z=15&output=embed"
+                                                                width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+                                                                tabindex="0"></iframe>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                                <div class="form-group">
-                                                    <label for="scarpType">scrap type : <span style="color: red;">*</span></label>
-                                                    <select id="scarpType" name="scarpType" class="form-control">
-                                                        <option value="">select</option>
-                                                        <option value="Books">Books</option>
-                                                        <option value="Bottels">Bottels</option>
-                                                        <option value="Batteries">Batteries</option>
+
+                                            </div>
+                                                                    
+                                         <div>
+                                             <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
+                                                <i class="fa fa-phone" aria-hidden="true" style="color: white;margin-left: 5px;"></i>
+                                             </div>
+                                        </div>
+                                        
+                                     </div>
+                                </div>
+                             </div>
+                        </div>
+                     </div>
+                    <% }) %>
+                <% } %>
+        <%  } %>
+    </div>
+
+
+    <!-- accepted orders section -->
+    <div id="acceptedOrderFound" style="display: none;">
+        <%  if(acceptedOrders.length > 0){ %>
+            <% acceptedOrders.forEach((seller) => { %>
+            <% if(seller.soldDataId.orderStatus === "ongoing"){ %>
+                    <div id="foundData">
+                        <div style="padding: 10px;" class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="<%= seller.soldDataId.image %>" loading="eager" alt="" width="100%" height="230"
+                                        style="margin-top: 5px;border-radius: 5px;">
+                                </div>
+                                <div class="col-md-4">
                                                         
-                                                    </select>
-                                                </div>
-                                               <div class="form-group">
-                                                    <label for="validationServer01">H-no :</label>
-                                                    <input type="text" class="form-control" id="validationServer01" placeholder="Enter hno" name="hno">
-                                                
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="village">village:</label>
-                                                    <input type="text" class="form-control" placeholder="Enter village" name="village">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="street">street:</label>
-                                                    <input type="text" class="form-control" placeholder="Enter street" name="street">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="mandal">mandal:</label>
-                                                    <input type="text" class="form-control" placeholder="Enter mandal" name="mandal">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="district">district:</label>
-                                                    <input type="text" class="form-control" placeholder="Enter district" name="district">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="state">state:</label>
-                                                    <input type="text" class="form-control" placeholder="Enter state" name="state">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="pincode">pincode:</label>
-                                                    <input type="text" class="form-control" placeholder="Enter pincode" name="pincode">
-                                                </div>
-
-                                           
+                                   <div style="margin-top: 10px;">
+                                        <p><strong>Name</strong> : <%= seller.soldDataId.userid.name %></p>
+                                        <p><strong>Phone Number</strong> : <%= seller.soldDataId.userid.phonenumber %></p>
+                                        <p><strong>Scrape Type</strong> : <%= seller.soldDataId.scarpType %></p>
+                                        <p><strong>Address </strong> : <%= seller.soldDataId.hno %>,<%= seller.soldDataId.village %>,<%= seller.soldDataId.street %>
+                                            <%= seller.soldDataId.pincode %>,<%= seller.soldDataId.state %> </p>
+                                   </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="display: flex;margin: 10px;">
+                                        <div>
+                                            <form action="/completeOrder" method="post">
+                                                <input type="hidden" name="acceptedOrderId" value="<%= seller._id %>">
+                                                <input type="hidden" name="sellerdataId" value="<%= seller.soldDataId._id %>">
+                                                <input type="submit" value="Complete order"
+                                                                            style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
+                                            </form>
                                         </div>
 
+                                        <div style="margin-left: 5px;"> 
+                                            <form action="/rejectOrder" method="post">
+                                                <input type="hidden" name="acceptedOrderId" value="<%= seller._id %>">
+                                                <input type="hidden" name="sellerdataId" value="<%= seller.soldDataId._id %>">
+                                                <input type="submit" value="Reject order"
+                                                                            style="background-color: #000080;border-radius: 75px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;">
+                                            </form>
+                                        </div>
+
+                                        <div>
+                                        <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
+                                                                    
+                                        <a type="button" data-toggle="modal" data-target="#popup<%= seller._id %>   "><i class="fa fa-location-arrow"
+                                                aria-hidden="true" style="color: white;margin-left: 5px;"></i></a>
+                                        </div>
+                                                                
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="popup<%= seller._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                                
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <iframe
+                                                            src="https://www.google.com/maps?q=<%= seller.soldDataId.location.coordinates[1] %>,<%= seller.soldDataId.location.coordinates[0] %>&z=15&output=embed"
+                                                            width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+                                                            tabindex="0"></iframe>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                        <div>
+                                        <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
+                                            <i class="fa fa-phone" aria-hidden="true" style="color: white;margin-left: 5px;"></i>
+                                        </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+            <% } %>
+            <% }) %>
+        <%  }else{ %>
+        <p style="text-align: center;margin-top: 20%;">No accepted orders</p>
+        <% } %>
+    </div>
+    </div>
+</div>
+<%}else if(user.usertype === "seller"){ %>
+    <div class="sellerSection">
+         <div class="container">
+            <div style="display: flex;margin-top: 50px;">
+                 <div id="postedDataBtn">
+                     <p class="active" style="padding: 5px;cursor: pointer;" id="posted"><strong> Your seller data</strong> </p>
+                 </div>
+                <div id="ongoingDataBtn">
+                     <p style="margin-left: 15px;padding: 5px;cursor: pointer;" id="ongo"><strong> Ongoing orders</strong> </p>
+                 </div>
+                            
+            </div>
+             <hr>
+                          
 
-                    <div class="container" id="postedData">
+                   
+
+         </div>
+
+ <div class="container" id="postedData" style="margin-bottom: 200px;">
                         
-                       <% if(userData){ %>
-                            <%if(userData.length > 0){ %>
-                                <%userData.forEach((sellerData) => { %>
+<% if(userData){ %>
+     <%if(userData.length > 0){ %>
+                    <%userData.forEach((sellerData) => { %>
+             
                                     
-                                    
-                                   <div >
-                                        <div id="foundData">
-                                            <div style="padding: 10px;" class="container">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <img src="<%= sellerData.image %>" loading="eager" alt="" width="110" height="110"
-                                                            style="margin-top: 5px;border-radius: 5px;">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <p><strong>Scrape Type</strong> : <%= sellerData.scarpType %></p>
-                                                        <p><strong>Address</strong> : <%= sellerData.hno %> ,<%= sellerData.village %>,
-                                                            <%= sellerData.street %>,
-                                                            <%= sellerData.mandal %>, <%= sellerData.district %>, <%= sellerData.pincode %> </p>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div style="display: flex;margin: 10px;">
-                                                            <div>
-                                                                <form action="/edits" method="post">
-                                                                    <input type="hidden" name="sellerdataId" value="<%= user._id %>">
-                                                                    <input type="submit" value="Edit" style="background-color: #000080;border-radius: 30px;border: none; color: white;outline: none;padding: 8px;padding-bottom: 9px;
-                                                                                                            padding-left: 15px; padding-right: 15px;">
-                                                                </form>
-                                                            </div>
+             <div >
+                <div id="foundData">
+                    <div style="padding: 10px;" class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                 <img src="<%= sellerData.image %>" loading="eager" alt="" width="100%" height="230"
+                                      style="margin-top: 5px;border-radius: 5px;">
+                             </div>
+                             <div class="col-md-4">
+                                <div style="margin-top: 10px;">
+                                      <p><strong>Scrape Type</strong> : <%= sellerData.scarpType %></p>
+                                 <p><strong>Address</strong> : <%= sellerData.hno %> ,<%= sellerData.village %>,
+                                      <%= sellerData.street %>,
+                                      <%= sellerData.mandal %>, <%= sellerData.district %>, <%= sellerData.pincode %> </p>
+                                </div>
+                             </div>
+                            <div class="col-md-4">
+                                 <div style="display: flex;margin: 10px;">
+                                   
+
+                                    <a href="/addscarp/update/<%= sellerData._id %>"
+                                        style="background-color: #000080;border-radius: 30px;border: none; color: white;outline: none;padding:
+                                        8px;padding-bottom: 9px;padding-left: 15px; padding-right: 15px;text-decoration: none;">EDIT</a>
+
+                                   
                                         
-                                                            <div>
-                                                                <div
-                                                                    style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
-                                                                    <a href=""><i class="fa fa-trash" aria-hidden="true"
-                                                                            style="color: white;margin-left: 5px;"></i></a>
-                                                                </div>
+                                 <div>
+                                     <div
+                                         style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
+                                         <a href="/addscarp/delete/<%= sellerData._id %>"><i class="fa fa-trash" aria-hidden="true"
+                                                style="color: white;margin-left: 5px;"></i></a>
+                                    </div>
                                         
-                                                            </div>
+                                 </div>
                                         
                                         
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                   </div>
+                            </div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+         </div>
 
                                    
                                    
-                                <%}) %>
-                           <% }else{ %>
-                               <p style="text-align: center;margin-top: 20%;">Post the scrape data</p>
-                           <% } %>
-                       <% }else{ %>
-                            <p style="text-align: center;margin-top: 20%;">You haven't posted any data</p>
-                       <% } %>
-                    </div>
+             <%}) %>
+          <% }else{ %>
+              <p style="text-align: center;margin-top: 20%;">Post the scrape data</p>
+          <% } %>
+      <% }else{ %>
+        <p style="text-align: center;margin-top: 20%;">You haven't posted any data</p>
+      <% } %>
+ </div>
 
-                    <div id="ongoingOrder" class="container" style="display: none;">
-                        <% if(acceptedOrders.length > 0){ %>
-                            <% acceptedOrders.forEach((order) => { %>
-                                <% if(order.soldDataId.orderStatus === "ongoing"){ %>
-                                        <div id="foundData">
-                                            <div style="padding: 10px;" class="container">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <img src="<%= order.soldDataId.image %>" loading="eager" alt="" width="110" height="110"
-                                                            style="margin-top: 5px;border-radius: 5px;">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div style="margin: 10px;">
-                                                            <p><strong>Scrape Type</strong> : <%= order.soldDataId.scarpType %></p>
-                                                            <p><strong>Address</strong> : <%= order.soldDataId.hno %> ,<%= order.soldDataId.village %>,
-                                                                <%= order.soldDataId.street %>,
-                                                                <%= order.soldDataId.mandal %>, <%= order.soldDataId.district %>,
-                                                                <%= order.soldDataId.pincode %> </p>
+<div id="ongoingOrder" class="container" style="display: none;margin-bottom: 200px;">
+      <% if(acceptedOrders.length > 0){ %>
+          <% acceptedOrders.forEach((order) => { %>
+             <% if(order.soldDataId.orderStatus === "ongoing"){ %>
+                     <div id="foundData">
+                         <div style="padding: 10px;" class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                     <img src="<%= order.soldDataId.image %>" loading="eager" alt="" width="100%" height="230"
+                                                     style="margin-top: 5px;border-radius: 5px;">
+                                             </div>
+                                            <div class="col-md-4">
+                                                <div style="margin: 10px;">
+                                                     <p><strong>Scrape Type</strong> : <%= order.soldDataId.scarpType %></p>
+                                                    <p><strong>Address</strong> : <%= order.soldDataId.hno %> ,<%= order.soldDataId.village %>,
+                                                          <%= order.soldDataId.street %>,
+                                                        <%= order.soldDataId.mandal %>, <%= order.soldDataId.district %>,
+                                                        <%= order.soldDataId.pincode %> </p>
+                                                 </div>
+                                              </div>
+                                             <div class="col-md-4">
+                                        
+                                                <div>
+                                                    <p style="margin : 10px;"><strong>Buyer Name </strong>: <%= order.buyerid.name %></p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <p style="margin : 10px;"><strong>Buyer Contact </strong>: <%= order.buyerid.phonenumber %> </p>
+                                                </div>
+                                                
+
+                                                <div style="display: flex;margin-left: -20px;margin-top: 30px;">
+                                                    
+                                                        <div
+                                                            style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 30px;margin-top: -5px;">
+                                                            <a href=""><i class="fa fa-phone" aria-hidden="true" style="color: white;margin-left: 5px;"></i></a>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                        
-                                                        <p style="margin : 10px;"><strong>Buyer Name </strong>: <%= order.buyerid.name %></p>
-                                                        <div style="display: flex;margin: 10px;">
-                                        
-                                                            <p><strong>Buyer Contact </strong>: <%= order.buyerid.phonenumber %> </p>
-                                                            <div>
-                                                                <div
-                                                                    style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 30px;margin-top: -5px;">
-                                                                    <a href=""><i class="fa fa-phone" aria-hidden="true"
-                                                                            style="color: white;margin-left: 5px;"></i></a>
-                                                                </div>
-                                        
-                                                            </div>
-                                        
-                                        
-                                                        </div>
+                                                
+                                                    
+                                                
+                                                    <div style="margin-left:5px;margin-top: -7px;">
+                                                        <form action="/sellerCancelOrder" method="post">
+                                                            <input type="hidden" value="<%= order._id %>" name="acceptedOrderId">
+                                                            <input type="hidden" value="<%= order.soldDataId._id %>" name="sellerDataIteamId">
+                                                            <input type="submit" value="cancel order"
+                                                                style="background-color: #000080;border-radius: 30px;border: none; color: white;outline: none;padding:
+                                                                                                                                                8px;padding-bottom: 9px;padding-left: 15px; padding-right: 15px;text-decoration: none;">
+                                                        </form>
                                                     </div>
                                                 </div>
-                                            </div>
+
+                                             </div>
                                         </div>
+                                 </div>
+                                 </div>
                                 <% } %>
-                            <% }) %>
-                        <% }else{ %>
-                            <p style="text-align: center;margin-top: 20%;">You dont have any ongoing orders</p>
+                    <% }) %>
+                 <% }else{ %>
+                  <p style="text-align: center;margin-top: 20%;">You dont have any ongoing orders</p>
                         <% } %>
                     </div>
                    
@@ -385,11 +479,17 @@
            <% } %>
        <% } %>
 
+          
+
+    <script src="../public/scripts/home.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
     <script>
+      
+
+        //navbar
         function myFunction() {
             var x = document.getElementById("myTopnav");
             if (x.className === "topnav") {
@@ -397,11 +497,11 @@
 
                 document.querySelector(".topnav").style.background = "black"
                 document.querySelector(".fa-times").style.display = "block"
-
+                 document.querySelector(".fa-bars").style.display = "none"
             } else {
                 x.className = "topnav";
                 document.querySelector(".topnav").style.background = "transparent"
-
+                document.querySelector(".fa-bars").style.display = "block"
                 document.querySelector(".fa-times").style.display = "none"
             }
         }
@@ -434,6 +534,8 @@
             $("#ongo").addClass("active")
             
         });
+
+        
     </script>
 </body>
 

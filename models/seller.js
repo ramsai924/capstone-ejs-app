@@ -35,7 +35,7 @@ const seller_user_Schema = Schema({
 seller_user_Schema.pre('save',function(next){
     var salt = bcrypt.genSaltSync(10);
     this.password = bcrypt.hashSync(this.password, salt);
-
+    this.usertype = this.usertype.trim()
     next()
 })
 

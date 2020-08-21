@@ -9,20 +9,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/public/style/home.css" type="text/css">
-    <title>Welcome</title>
+    <title>Profile</title>
 </head>
 
 <body>
     <div style="position: relative;top: 50%;">
         <div class="topnav" id="myTopnav">
             <div class="container">
-                <a href="/" class="active home-tag" style="color: black;" id="home">Home</a>
+                <a href="/" class=" home-tag" style="color: black;" id="home">Home</a>
                 <div id="alignment">
 
-
+                    
                     <a href="/profile">About us</a>
                     <a href="/profile">Contact us</a>
-                    <a href="/needs">Needs</a>
+        
                     <a href="/profile">Profile</a>
                     <a href="/logout">Logout</a>
 
@@ -34,24 +34,104 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <h3 style="text-align: center;">Profile</h3><hr>
+    </div>
+    <div class="container" style="margin-top: 30px;">
+       <div style="background-color:#FFFAFA;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+           <div style="padding: 15px;">
+                <img src="../public/images/profile.webp" alt="" width="130" height="130"><br><br>
+                
+                <% if(user){ %>
+                <div id="profileSec">
+                    <p> <strong>Name </strong> : <%= user.name %></p>
+                    <p> <strong>Email </strong> : <%= user.email %></p>
+                    <p> <strong>Phone Number </strong> : <%= user.phonenumber %></p>
+                </div>
+                
+           
+           <div>
+             
+                
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                style="background-color: #000080;border-radius: 30px;border: none; color: white;outline:
+                 none;padding: 8px;padding-bottom: 9px;padding-left: 15px; padding-right: 15px;">
+                    Edit
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit profile</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- edit profile form -->
+                            <form action="/updateprofile" method="POST">
+                                <div class="form-group">
+                                    <label for="name">Name </label>
+                                    <input type="text" class="form-control" value="<%= user.name %>" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" class="form-control"  aria-describedby="emailHelp"
+                                        value="<%= user.email %>" name="email">
+                                    
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Phone Number</label>
+                                    <input type="text" class="form-control"  value="<%= user.phonenumber %>" name="phonenumber">
+                                </div>
+                             
+                                <input type="hidden" class="form-control" value="<%= user.usertype %>" name="usertype">
+                            
 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                style="background-color: #000080;border-radius: 30px;border: none; color: white;outline:
+                                none;padding: 8px;padding-bottom: 9px;padding-left: 15px; padding-right: 15px;">Close</button>
+                                <button type="submit" class="btn btn-primary"
+                                style="background-color: #000080;border-radius: 30px;border: none; color: white;outline:
+                                none;padding: 8px;padding-bottom: 9px;padding-left: 15px; padding-right: 15px;">Submit</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
+           </div>
+        <% } %>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script>
-        function myFunction() {
-            var x = document.getElementById("myTopnav");
-            if (x.className === "topnav") {
-                x.className += " responsive";
+         function myFunction() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
 
-                document.querySelector(".topnav").style.background = "black"
-                document.querySelector(".fa-times").style.display = "block"
-
-            } else {
-                x.className = "topnav";
-                document.querySelector(".topnav").style.background = "transparent"
-
-                document.querySelector(".fa-times").style.display = "none"
+                    document.querySelector(".topnav").style.background = "black"
+                    document.querySelector(".fa-times").style.display = "block"
+                    document.querySelector(".fa-bars").style.display = "none"
+                } else {
+                    x.className = "topnav";
+                    document.querySelector(".topnav").style.background = "transparent"
+                    document.querySelector(".fa-bars").style.display = "block"
+                    document.querySelector(".fa-times").style.display = "none"
+                }
             }
-        }
     </script>
 </body>
 

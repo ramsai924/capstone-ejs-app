@@ -47,7 +47,7 @@ app.get("/",redirectLogin,async (req, res) => {
           { path: "soldDataId", model: "seller_table_data" },
           { path: "buyerid", model: "buyer_user_model", select: "-completedOrders"}
         ])
-        console.log(acceptedOrders)
+        console.log(seller)
         return res.render("home", { user: seller, userData: userData , acceptedOrders  })
       }
 
@@ -111,7 +111,7 @@ app.get("/profile",redirectLogin,async (req,res) => {
           { path: "completedOrders", model: "seller_table_data" }
         ])
       if (buyer) {
-        console.log(buyer)
+        // console.log(buyer)
         return res.render("profile", { user: buyer })
       }
   } catch (error) {
@@ -122,12 +122,16 @@ app.get("/profile",redirectLogin,async (req,res) => {
 //update profile details
 app.post("/updateprofile", async(req,res) => {
   try {
-      if(req.body.usertype === "buyer"){
+    
+    if (req.body.usertype == 'buyer'){
+      
         const updateBuyer = await Buyer.findByIdAndUpdate({ _id: req.session.userid } , req.body , { new : true , runValidators : true })
-        return res.status(200).json({ success : true , message : "details updated success"})
-      }else if(req.body.usertype === "seller"){
+        res.redirect("/profile")
+        // return res.status(200).json({ success : true , message : "details updated success"})
+      }else if(req.body.usertype == 'seller'){
          const updateBuyer = await sellerUser.findByIdAndUpdate({ _id: req.session.userid } , req.body , { new : true , runValidators : true })
-        return res.status(200).json({ success : true , message : "details updated success"})
+         res.redirect("/profile")
+        // return res.status(200).json({ success : true , message : "details updated success"})
       }
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -196,6 +200,16 @@ app.post("/completeOrder", async (req,res) => {
   }
 })
 
+//seller cancel order
+app.post("/sellerCancelOrder", async (req,res) => {
+  try {
+    const aceptedData = await acceptedOrder.findByIdAndDelete({ _id: req.body.acceptedOrderId})
+    const usersellerDate = await sellerData.findByIdAndUpdate({ _id: req.body.sellerDataIteamId }, { orderStatus: "active" }, { new: true, runValidators: true })
+    res.redirect("/")
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message })
+  }
+})
 
 //logout
 app.get("/logout", (req, res) => {
