@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/public/style/home.css" type="text/css">
-   
+
     <title>Home</title>
 </head>
 
@@ -150,8 +150,11 @@
                            </div>
 
                            <div id="acceptedIteams" style="cursor: pointer;">
-                               <p style="margin-left: 30px;margin-top: 9px;" id="accepteds"> <strong>Accepted Orders</strong></p>
+                               <p style="margin-left: 20px;margin-top: 12px;" id="accepteds"> <strong>Accepted Orders</strong></p>
                            </div>
+                        <div id="buyerhistory" style="cursor: pointer;">
+                            <p style="margin-left: 20px;margin-top: 12px;" id="buyerhist"> <strong>History</strong></p>
+                        </div>
                         </div><hr>
 
                         <div id="foundusersNear" style="margin-bottom: 50px;">
@@ -175,6 +178,7 @@
                                                         <p><strong>Scrape Type</strong> : <%= users.scarpType %></p>
                                                         <p><strong>Address </strong> : <%= users.hno %>,<%= users.village %>,<%= users.street %>
                                                             <%= users.pincode %>,<%= users.state %> </p>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -208,6 +212,7 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
+                                                            <input type="hidden" class="mapvals" value="<%= users.location.coordinates[1] %>,<%= users.location.coordinates[0] %>">
                                                             <iframe
                                                                 src="https://www.google.com/maps?q=<%= users.location.coordinates[1] %>,<%= users.location.coordinates[0] %>&z=15&output=embed"
                                                                 width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
@@ -229,6 +234,12 @@
                                              </div>
                                         </div>
                                         
+                                     </div>
+                                     <div>
+                                        <div style="display: flex;margin: 15px;">
+                                            <p class="kmss" style="font-weight:bold;"></p>
+                                            
+                                        </div>
                                      </div>
                                 </div>
                              </div>
@@ -319,6 +330,7 @@
                                         <div style="background-color: #000080;border-radius: 20px;padding: 8px ;width: 40px;margin-left: 5px;">
                                             <i class="fa fa-phone" aria-hidden="true" style="color: white;margin-left: 5px;"></i>
                                         </div>
+                                        
                                         </div>
                                     </div>
                                 </div>
@@ -331,6 +343,44 @@
         <p style="text-align: center;margin-top: 20%;">No accepted orders</p>
         <% } %>
     </div>
+
+    <!-- buyer history section -->
+    <div class="container" id="buyerHistorySection" style="display: none;">
+       <% if(user.completedOrders.length > 0){ %>
+           <% user.completedOrders.forEach((buyerHis) => { %>
+               <div id="foundData">
+                    <div class="container" style="padding: 10px;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="/<%= buyerHis.image %>" loading="eager" alt="" width="100%" height="230"
+                                    style="margin-top: 5px;border-radius: 5px;">
+                            </div>
+                            <div class="col-md-4">
+                                <div style="margin-top: 10px;">
+                                    <p> <strong>Name</strong> : <%= buyerHis.userid.name %></p>
+                                    <p> <strong>Phone Number</strong> : <%= buyerHis.userid.phonenumber %></p>
+                                    <p> <strong>Plastic type</strong> : <%= buyerHis.scarpType %></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div style="margin-top: 10px;"> 
+                                    <p><strong>Address </strong> :
+                                        <%= buyerHis.hno %>,<%= buyerHis.village %>,<%= buyerHis.street %>
+                                        <%= buyerHis.pincode %>,<%= buyerHis.state %> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+            <% }) %>
+      <% }else{ %>
+        <div>
+            <p>No History found</p>
+        </div>
+     <% } %>
+    </div>
+
+    
     </div>
 </div>
 <%}else if(user.usertype === "seller"){ %>
@@ -487,8 +537,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
     <script>
-      
-
+       
         //navbar
         function myFunction() {
             var x = document.getElementById("myTopnav");
@@ -510,10 +559,20 @@
         //Buyer events
         $("#acceptedIteams").click(function(){
             $("#acceptedOrderFound").show()
+            $("#buyerHistorySection").hide()
             $("#foundusersNear").hide()
             $("#accepteds").addClass("active")
+            $("#buyerhist").removeClass("active")
             $(".active").css({ "padding" : "3px" , "margin-top" : "-0px"})
         });
+        $("#buyerhistory").click(function(){
+            $("#buyerHistorySection").show()
+            $("#foundusersNear").hide()
+            $("#acceptedOrderFound").hide()
+            $("#buyerhist").addClass("active")
+            $("#accepteds").removeClass("active")
+            $(".active").css({ "padding": "3px", "margin-top": "-0px" })
+        })
         $("#getuserNearBtn").click(function(){
             $("#accepteds").removeClass("active")
         });
@@ -534,7 +593,7 @@
             $("#ongo").addClass("active")
             
         });
-
+     
         
     </script>
 </body>

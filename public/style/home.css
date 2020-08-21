@@ -42,7 +42,12 @@ margin-top: 15%;
 left: 10%;
 }
 }
-
+#posted , #ongo , #accepteds ,#buyerhist{
+  font-size: 14px;
+}
+#getuserNearBtn{
+  background-color: blue;
+}
 
 .topnav {
   overflow: hidden;

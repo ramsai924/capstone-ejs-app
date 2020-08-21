@@ -3,6 +3,7 @@ const sellerData = require("../models/seller_data_table")
 const sellerUser = require("../models/seller")
 const acceptedOrder = require("../models/acceptedOrders")
 const Buyer = require("../models/buyer")
+
 const app = express();
 
 
@@ -38,7 +39,7 @@ app.get("/welcome",redirectHome,async (req,res) => {
 //getuser details home page
 app.get("/",redirectLogin,async (req, res) => {
   try {
-   
+      // console.log(req.q)
       const seller = await sellerUser.findById({ _id: req.session.userid })
         .populate({ path: "soldHistory", model: "seller_table_data" })
       if (seller) {
@@ -54,7 +55,7 @@ app.get("/",redirectLogin,async (req, res) => {
       const buyer = await Buyer.findById({ _id: req.session.userid })
         .populate([
           { path: "acceptedOreders", model: "seller_table_data", populate : { path: "userid", model: "seller_user_table" } },
-          { path: "completedOrders", model: "seller_table_data" }
+          { path: "completedOrders", model: "seller_table_data", populate: { path: "userid", model: "seller_user_table" } }
         ])
       if (buyer) {
         var foundUsers;
@@ -84,7 +85,7 @@ app.get("/",redirectLogin,async (req, res) => {
              },
            ]);
        }
-        console.log(acceptedOrders)
+        // console.log(buyer)
         return res.render("home", { user: buyer, usersFound: foundUsers, acceptedOrders})
       }
 
@@ -141,7 +142,7 @@ app.post("/updateprofile", async(req,res) => {
 //status change to ongoing (buyer)
 app.post("/acceptOrder",async (req,res) => {
   try {
-      //  console.log(req.body)
+       console.log(req.query)
           const usertype = await Buyer.findById({ _id : req.session.userid })
 
           if(usertype.usertype === "buyer"){
@@ -152,6 +153,7 @@ app.post("/acceptOrder",async (req,res) => {
           }
 
       //  return res.status(200).json({ success : true , message : "Order accepted"})
+
     res.redirect("/?latitude=1&longitude=7&distance=100")
 
   } catch (error) {
