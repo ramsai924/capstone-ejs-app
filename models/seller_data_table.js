@@ -1,31 +1,44 @@
 const mongoose =  require('mongoose')
+const moment = require('moment-timezone');
 const geocoder = require('../utils/geocoder')
 const Schema = mongoose.Schema;
 
+
+const currentDate = moment.tz(Date.now(), "Asia/Kolkata");
+
+console.log(currentDate)
+
 const seller_table_data_schema = Schema({
-  userid: {
-    type: Schema.Types.ObjectId,
-    ref: "seller_user_table",
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  scarpType : {
-    type : String,
-    required : true
-  },
-  postedDate: {
-    type: Date,
-  },
-  orderStatus: {
-    type: String,
-    default: "active",
-  },
-  hno:{
+        userid: {
+            type: Schema.Types.ObjectId,
+            ref: "seller_user_table",
+            required: true,
+        },
+        image: {
+            type: String,
+            required: true,
+        },
+        scarpType : {
             type : String,
             required : true
+        },
+        time: {
+            type : String
+        },
+        date : {
+            type : String
+        },
+        orderStatus: {
+            type: String,
+            default: "active",
+        },
+        timestamps : {
+            type : Date,
+            default : new Date
+        },
+        hno:{
+        type : String,
+        required : true
         },
         village : {
             type : String,
@@ -66,6 +79,7 @@ const seller_table_data_schema = Schema({
         },
 });
 
+// seller_table_data_schema.plugin(timeZone, { paths: 'timeDate' });
 seller_table_data_schema.pre('save',async function(next){
     const address_data = `${this.hno},${this.village},${this.mandal},${this.district},${this.state},${this.pincode}`;
     

@@ -41,7 +41,7 @@ app.get("/",redirectLogin,async (req, res) => {
   try {
       // console.log(req.q)
       const seller = await sellerUser.findById({ _id: req.session.userid })
-        .populate({ path: "soldHistory", model: "seller_table_data" })
+        .populate({ path: "soldHistory", model: "seller_table_data", populate: { path: "boughtUser", model: "buyer_user_model", select: "-completedOrders" }})
       if (seller) {
         const userData = await sellerData.find({ userid : req.session.userid , orderStatus: "active"})
         const acceptedOrders = await acceptedOrder.find({ sellerid: req.session.userid }).populate([
@@ -85,7 +85,7 @@ app.get("/",redirectLogin,async (req, res) => {
              },
            ]);
        }
-        // console.log(buyer)
+        console.log(foundUsers)
         return res.render("home", { user: buyer, usersFound: foundUsers, acceptedOrders})
       }
 
@@ -185,11 +185,13 @@ app.post("/rejectOrder", async (req, res) => {
 //status change to completed order(buyer)
 app.post("/completeOrder", async (req,res) => {
   try {
+    // console.log(req.body)
         const usertype = await Buyer.findById({ _id: req.session.userid })
 
         if (usertype.usertype === "buyer") {
           const acceptTable = await acceptedOrder.findByIdAndDelete({ _id: req.body.acceptedOrderId })
           const pushSellerData = await Buyer.findByIdAndUpdate({ _id: req.session.userid }, { $push: { "completedOrders": req.body.sellerdataId } }, { new: true, runValidators: true })
+          const seller_user = await sellerUser.findByIdAndUpdate({ _id: req.body.sellerid }, { $push: { "soldHistory": req.body.sellerdataId } }, { new: true, runValidators: true })
           const usersellerData = await sellerData.findByIdAndUpdate({ _id: req.body.sellerdataId }, { orderStatus: "completed", boughtUser: req.session.userid  }, { new: true, runValidators: true })
         } else {
           return res.status(400).json({ success: false, Erorr: "You are not Authorized to update details" })

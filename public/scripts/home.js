@@ -53,11 +53,24 @@ window.addEventListener("load", function () {
         }
 
         function errors(err) {
-            document.getElementById("turnon").style.display = "block"
-            document.getElementById("turnon1").style.display = "block"
+            document.getElementById("locationPopup").style.display = "block"
             console.log(err)
         }
     } else {
         alert("Your browser does't support geo Location")
     }
 });
+
+function off() {
+    document.getElementById("locationPopup").style.display = "none";
+}
+
+var time = document.getElementById("postTime")
+var date = document.getElementById("postDate")
+
+var data = new Date().toLocaleString()
+var set = data.split(',')
+
+date.value = set[0]
+time.value = set[1]
+
