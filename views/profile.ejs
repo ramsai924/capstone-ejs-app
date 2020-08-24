@@ -33,6 +33,17 @@
             </div>
         </div>
     </div>
+
+        <% if(message.length > 0){ %>
+        <div class="alert alert-success alert-dismissible" style="position: fixed;background-color: white;z-index: 100;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border: none;transition: 1s;" id="alerts">
+            <strong style="color: black;"><%= message %></strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" style="text-decoration: none;color: black;">&times;</span>
+            </button>
+        </div>
+        <% } %>
+
     <div class="container">
         <h3 style="text-align: center;">Profile</h3><hr>
     </div>
@@ -128,6 +139,10 @@
                     document.querySelector(".fa-times").style.display = "none"
                 }
             }
+
+             setTimeout(() => {
+                    document.getElementById("alerts").style.display = "none"
+                }, 3000);
     </script>
 </body>
 

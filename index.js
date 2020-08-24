@@ -9,6 +9,7 @@ const bodyparser = require('body-parser')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const path = require('path')
+const flash = require('connect-flash')
 const MongoStore = require("connect-mongo")(session);
 
 //routes
@@ -38,6 +39,7 @@ app.use(
 //body parser
 app.use(bodyparser.urlencoded({ extended : false }))
 app.use(express.json())
+app.use(flash())
 
 app.use('/public', express.static(path.join(__dirname, 'public')))
 

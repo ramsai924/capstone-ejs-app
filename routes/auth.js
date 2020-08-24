@@ -13,6 +13,7 @@ app.post("/registerSeller",async (req,res) => {
         const sellerUsers = await sellerUser.create(req.body)
         req.session.userid = sellerUsers._id;
         // res.status(201).json({ success : true , user : sellerUsers})
+    req.flash('message', 'Login success')
         res.redirect("/")
   } catch (error) {
         res.status(500).json({ success : false , error : error.message })
@@ -33,7 +34,7 @@ app.post("/loginseller", async (req,res) => {
         }
 
         req.session.userid = sellerUsers._id;
-        
+        req.flash('message', 'Login success')
         res.redirect("/")
   } catch (error) {
         res.status(500).json({ success : false , error : error.message })
@@ -45,6 +46,7 @@ app.post("/registerbuyer",async (req,res) => {
   try {
     const buyerusers = await buyerUser.create(req.body)
     req.session.userid = buyerusers._id;
+    req.flash('message', 'Login success')
     res.redirect("/")
   } catch (error) {
     res.status(500).json({ success : false , error : error.message })
@@ -65,6 +67,7 @@ app.post("/loginbuyer", async (req, res) => {
     }
   
     req.session.userid = buyerusers._id;
+    req.flash('message', 'Login success')
     return res.redirect("/")
 
   } catch (error) {

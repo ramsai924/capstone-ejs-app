@@ -1,6 +1,7 @@
 const express = require("express");
 const sellerData = require("../models/seller_data_table")
 const sellerUser = require("../models/seller")
+const flash = require('connect-flash')
 const acceptedOrder = require("../models/acceptedOrders")
 const Buyer = require("../models/buyer")
 
@@ -29,7 +30,7 @@ const redirectHome = (req, res, next) => {
 
 app.get("/welcome",redirectHome,async (req,res) => {
   try {
-      res.render("welcome")
+    res.render("welcome", { message: req.flash('message') })
   } catch (error) {
     console.log(error)
   }
@@ -49,7 +50,7 @@ app.get("/",redirectLogin,async (req, res) => {
           { path: "buyerid", model: "buyer_user_model", select: "-completedOrders"}
         ])
         console.log(seller)
-        return res.render("home", { user: seller, userData: userData , acceptedOrders  })
+        return res.render("home", { user: seller, userData: userData, acceptedOrders, message: req.flash('message')  })
       }
 
       const buyer = await Buyer.findById({ _id: req.session.userid })
@@ -86,7 +87,7 @@ app.get("/",redirectLogin,async (req, res) => {
            ]);
        }
         console.log(foundUsers)
-        return res.render("home", { user: buyer, usersFound: foundUsers, acceptedOrders})
+        return res.render("home", { user: buyer, usersFound: foundUsers, acceptedOrders, message: req.flash('message')})
       }
 
     
@@ -103,7 +104,8 @@ app.get("/profile",redirectLogin,async (req,res) => {
       const seller = await sellerUser.findById({ _id: req.session.userid })
         .populate({ path: "soldHistory", model: "seller_table_data" })
       if (seller) {
-        return res.render("profile", { user : seller})
+        
+        return res.render("profile", { user: seller, message: req.flash('message')})
       }
 
       const buyer = await Buyer.findById({ _id: req.session.userid })
@@ -113,7 +115,8 @@ app.get("/profile",redirectLogin,async (req,res) => {
         ])
       if (buyer) {
         // console.log(buyer)
-        return res.render("profile", { user: buyer })
+        
+        return res.render("profile", { user: buyer, message: req.flash('message') })
       }
   } catch (error) {
     res.status(500).json({ success: false, error: error.message })
@@ -127,10 +130,12 @@ app.post("/updateprofile", async(req,res) => {
     if (req.body.usertype == 'buyer'){
       
         const updateBuyer = await Buyer.findByIdAndUpdate({ _id: req.session.userid } , req.body , { new : true , runValidators : true })
+      req.flash('message', 'Profile updated')
         res.redirect("/profile")
         // return res.status(200).json({ success : true , message : "details updated success"})
       }else if(req.body.usertype == 'seller'){
          const updateBuyer = await sellerUser.findByIdAndUpdate({ _id: req.session.userid } , req.body , { new : true , runValidators : true })
+        req.flash('message', 'Profile updated')
          res.redirect("/profile")
         // return res.status(200).json({ success : true , message : "details updated success"})
       }
@@ -153,7 +158,7 @@ app.post("/acceptOrder",async (req,res) => {
           }
 
       //  return res.status(200).json({ success : true , message : "Order accepted"})
-
+    req.flash('message', 'Order accepted')
     res.redirect("/?latitude=1&longitude=7&distance=100")
 
   } catch (error) {
@@ -176,6 +181,7 @@ app.post("/rejectOrder", async (req, res) => {
     }
 
     // return res.status(200).json({ success: true, message: "Order completed" })
+    req.flash('message', 'order cancelled')
     res.redirect("/?latitude=1&longitude=7&distance=100")
   } catch (error) {
     res.status(500).json({ success: false, error: error.message })
@@ -198,6 +204,7 @@ app.post("/completeOrder", async (req,res) => {
         }
 
         // return res.status(200).json({ success: true, message: "Order completed" })
+    req.flash('message', 'order completed')
     res.redirect("/?latitude=1&longitude=7&distance=100")
   } catch (error) {
     res.status(500).json({ success: false, error: error.message })
@@ -209,6 +216,7 @@ app.post("/sellerCancelOrder", async (req,res) => {
   try {
     const aceptedData = await acceptedOrder.findByIdAndDelete({ _id: req.body.acceptedOrderId})
     const usersellerDate = await sellerData.findByIdAndUpdate({ _id: req.body.sellerDataIteamId }, { orderStatus: "active" }, { new: true, runValidators: true })
+    req.flash('message', 'order cancelled')
     res.redirect("/")
   } catch (error) {
     res.status(500).json({ success: false, error: error.message })
@@ -222,7 +230,7 @@ app.get("/logout", (req, res) => {
       res.redirect("/");
       return;
     }
-
+    req.flash('message', 'Logout sucess')
     res.clearCookie("sid");
     res.redirect("/welcome");
   });
